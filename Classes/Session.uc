@@ -12,16 +12,16 @@ var string hash;
 var array<KeyValuePair> Data;
 
 // get the value of a var name, return sdefault if not found
-// bFound is true when the value exists
-function string getValue(string name, optional string sdefault, optional out bool bFound)
+// bFound is 1 when the value exists, 0 otherwise
+function string getValue(string name, optional string sdefault, optional out int bFound)
 {
   local int i;
-  bFound = true;
+  bFound = 1;
   for (i = 0; i<data.length; i++)
   {
     if (data[i].key == name) return data[i].value;
   }
-  bFound = false;
+  bFound = 0;
   return sdefault;
 }
 
