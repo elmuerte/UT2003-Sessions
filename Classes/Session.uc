@@ -11,16 +11,22 @@ var string hash;
 // contains the data for this session
 var array<KeyValuePair> Data;
 
-function string getValue(string name, optional string sdefault)
+// get the value of a var name, return sdefault if not found
+// bFound is true when the value exists
+function string getValue(string name, optional string sdefault, optional out bool bFound)
 {
   local int i;
+  bFound = true;
   for (i = 0; i<data.length; i++)
   {
     if (data[i].key == name) return data[i].value;
   }
+  bFound = false;
   return sdefault;
 }
 
+// Set the value of a var name, if bAddIfNotExists it will be added when it doesn't exist
+// oldValue will have the previous value
 function bool setValue(string name, string value, bool bAddIfNotExists, optional out string oldValue)
 {
   local int i;
@@ -39,6 +45,22 @@ function bool setValue(string name, string value, bool bAddIfNotExists, optional
     data[data.length-1].Key = name;
     data[data.length-1].Value = value;
     return true;
+  }
+  return false;
+}
+
+// Remove a value from the session
+function bool removeValue(string name, optional out string oldValue)
+{
+  local int i;
+  for (i = 0; i<data.length; i++)
+  {
+    if (data[i].key == name) 
+    {
+      oldValue = data[i].value;
+      data.remove(i, 1);
+      return true;
+    }
   }
   return false;
 }
